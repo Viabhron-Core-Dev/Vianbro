@@ -1,0 +1,92 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+
+android {
+    namespace 'com.jamal2367.styx'
+    compileSdk 35
+
+    defaultConfig {
+        applicationId 'com.jamal2367.styx'
+        minSdk 21
+        targetSdk 35
+        versionCode 93
+        versionName '9.3.0'
+        resConfigs 'en', 'ar', 'cs', 'de', 'el', 'es', 'fr', 'hu', 'it', 'iw', 'ja', 'ko', 'lt', 'nl', 'no', 'pl', 'pt', 'pt-rBR', 'ro', 'ru', 'sr', 'sv', 'tr', 'uk', 'vi', 'zh-rCN', 'zh-rTW'
+    }
+
+    buildTypes {
+        debug {
+            minifyEnabled false
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+
+        release {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
+            ndk {
+                abiFilters 'armeabi-v7a', 'arm64-v8a'
+            }
+        }
+    }
+
+    lintOptions {
+        disable 'MissingTranslation'
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    buildFeatures {
+        dataBinding true
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    // Kotlin //
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
+
+    // Google Stuff //
+    implementation "com.google.android.material:material:1.4.0-alpha02"
+
+    // AndroidX Stuff //
+    implementation 'androidx.palette:palette-ktx:1.0.0'
+    implementation 'androidx.preference:preference-ktx:1.1.1'
+    implementation 'androidx.webkit:webkit:1.4.0'
+
+    // Reading mode //
+    implementation 'net.dankito.readability4j:readability4j:1.0.5'
+
+    // Dependencies Injection //
+    implementation 'com.google.dagger:dagger:2.34.1'
+    kapt 'com.google.dagger:dagger-compiler:2.34.1'
+
+    // Proxy Support //
+    implementation 'net.i2p.android:client:0.9.49'
+    implementation 'net.i2p.android:helper:0.9.5'
+
+    // Tor Proxy //
+    implementation 'info.guardianproject.netcipher:netcipher:2.1.0'
+
+    // OkHttp3 //
+    implementation 'com.squareup.okhttp3:okhttp:5.0.0-alpha.2'
+
+    // RxJava //
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
+    implementation 'io.reactivex.rxjava2:rxkotlin:2.4.0'
+}
+
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
+    kotlinOptions {
+        jvmTarget = '17'
+        freeCompilerArgs += ['-XXLanguage:+InlineClasses']
+        freeCompilerArgs += ['-progressive']
+    }
+}
